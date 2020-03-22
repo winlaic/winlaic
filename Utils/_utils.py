@@ -158,7 +158,7 @@ class Logger:
     def parse_message(self, message):
         if isinstance(message, typing.Mapping):
             ret = '\t'.join(['{}={}'.format(k, v) for k, v in message.items()])
-        elif isinstance(message, typing.Sequence):
+        elif isinstance(message, (typing.List, typing.Tuple)):
             ret = '\t'.join([str(item) for item in message])
         else:
             ret = str(message)
