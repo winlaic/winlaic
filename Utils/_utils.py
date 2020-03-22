@@ -1,13 +1,17 @@
 import os, time, logging
 import tqdm, yaml
 from ..FileSystem import ensuredir
+import typing
 
 __all__ = [
-    'listt', 'time_stamp', 'print_command', 'powerline_style', 'Logger',
+    'listt', 'time_stamp', 'print_command', 'powerline_style', 'Logger', 'cover_print'
 ]
 
 listt = lambda x: list(map(list, zip(*x)))
 time_stamp = lambda : time.strftime('%Y%m%d-%H%M%S')
+
+def cover_print(s, end=False):
+    print(s.ljust(os.get_terminal_size().columns), end=('\n' if end else '\r'))
 
 
 def print_command(title, command):
@@ -151,18 +155,15 @@ class Logger:
             self.file_handler.formatter = self.basic_formatter
             self.logger.addHandler(self.file_handler)
 
-    def parse_message_list(self, message_list):
-        if isinstance(message_list, list) or isinstance(message_list, tuple):
-            ret = ''
-            for i_item, item in enumerate(message_list):
-                ret += str(item)
-                if i_item % 2 == 0:
-                    ret += ': '
-                else:
-                    ret += '\t'
-            return ret[0:-1]
+    def parse_message(self, message):
+        if isinstance(message, typing.Mapping):
+            ret = '\t'.join(['{}={}'.format(k, v) for k, v in message.items()])
+        elif isinstance(message, typing.Sequence):
+            ret = '\t'.join([str(item) for item in message])
         else:
-            return str(message_list)
+            ret = str(message)
+        return ret
+        
 
     @property
     def d(self): pass
@@ -178,16 +179,16 @@ class Logger:
 
     @w.setter
     def w(self, message_list):
-        self.logger.warning(self.parse_message_list(message_list))
+        self.logger.warning(self.parse_message(message_list))
 
     @i.setter
     def i(self, message_list):
-        self.logger.info(self.parse_message_list(message_list))
+        self.logger.info(self.parse_message(message_list))
 
     @d.setter
     def d(self, message_list):
-        self.logger.debug(self.parse_message_list(message_list))
+        self.logger.debug(self.parse_message(message_list))
 
     @e.setter
     def e(self, message_list):
-        self.logger.error(self.parse_message_list(message_list))
+        self.logger.error(self.parse_message(message_list))

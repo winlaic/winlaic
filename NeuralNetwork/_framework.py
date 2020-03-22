@@ -138,7 +138,6 @@ class Trainer:
                     self.schedular.step()
                 self.__i += 1
                 yield sum(self.loss_collector) / len(self.loss_collector)
-            raise StopIteration
         elif self.mode == 'iter':
             progress = iter(self.dataloader)
             while self.__i < self.__n:
@@ -162,7 +161,6 @@ class Trainer:
                     self.schedular.step()
                 self.__i += 1
                 yield loss_plain
-            raise StopIteration
 
 
     def criterion(self, net, sequence):
