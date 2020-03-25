@@ -11,7 +11,7 @@ class ParameterContainer:
         for k, v in self.__dict__.items():
             if k != '__repr__':
                 ret += '{}:\t{}\n'.format(k, v)
-        ret += '------------------------------------------------\n'
+        ret += '------------------------------------------------'
         return ret
 
 def dict2container(d):
