@@ -1,7 +1,8 @@
 import yaml
 
 __all__ = [
-    'yaml_params'
+    'yaml_params',
+    'load_default_from_yaml'
 ]
 
 class ParameterContainer:
@@ -32,3 +33,12 @@ def container2dict(c):
 
 def yaml_params(param_file):
     return dict2container(yaml.safe_load(open(param_file)))
+
+def load_default_from_yaml(args, param_file):
+    with open(param_file) as f:
+        defaults = yaml.safe_load(f)
+    for k in args.__dict__:
+        if args[k] is None:
+            if k in defaults:
+                args[k] = defaults[k]
+    return args
