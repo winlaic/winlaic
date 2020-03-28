@@ -38,7 +38,7 @@ def load_default_from_yaml(args, param_file):
     with open(param_file) as f:
         defaults = yaml.safe_load(f)
     for k in args.__dict__:
-        if args[k] is None:
+        if args.__dict__[k] is None:
             if k in defaults:
-                args[k] = defaults[k]
+                args.__dict__[k] = defaults[k]
     return args
