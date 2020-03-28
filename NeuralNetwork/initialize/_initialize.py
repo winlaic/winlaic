@@ -4,16 +4,16 @@ import random
 import numpy as np
 
 __all__ = [
-    'reproducible', 'general_initialize'
+    'deterministic', 'general_initialize'
 ]
 
-def reproducible(random_seed=1):
-    random.seed(random_seed)
-    np.random.seed(random_seed)
+def deterministic(torch_seed=1, numpy_seed=1, python_seed=1):
+    random.seed(python_seed)
+    np.random.seed(numpy_seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
-    torch.manual_seed(random_seed)
-    torch.cuda.manual_seed(random_seed)
+    torch.manual_seed(torch_seed)
+    torch.cuda.manual_seed(torch_seed)
 
 def general_initialize(net):
     for m in net.modules():
