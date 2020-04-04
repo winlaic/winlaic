@@ -313,6 +313,9 @@ class Saver:
                 if self.logger is not None:
                     self.logger.w = 'EPOCH: {}, {} achieved {:.3f}, succeed last best value. Model saved at "{}".'.format(
                         self.trainer.progress, criterion_name, criterion_value, save_path)
+                return True
+        else:
+            return False
                 
                 
             
