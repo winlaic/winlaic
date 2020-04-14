@@ -304,6 +304,9 @@ class Saver:
         self.save_best(criterion_value=criterion_value, mode='minimum', criterion_name=criterion_name)    
     
     def save_best(self, criterion_value, mode, criterion_name=''):
+        if math.isnan(criterion_value):
+            self.logger.e = 'Warning: {} is NaN! Skipped.'.format(criterion_name)
+            return False
         if (criterion_name not in self.last_bests) or \
             (mode == 'maximum' and criterion_value >= self.last_bests[criterion_name]) or \
             (mode == 'minimum' and criterion_value <= self.last_bests[criterion_name]):
